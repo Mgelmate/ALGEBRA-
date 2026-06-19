@@ -18,8 +18,8 @@ Esta aplicación calcula la combinación óptima de **Drones Livianos** y **Dron
 st.sidebar.header("⚙️ Configuración de Recursos")
 
 st.sidebar.subheader("Límites Disponibles (Restricciones)")
-recurso_1 = st.sidebar.slider("Límite del Recurso 1 (ej. Batería/Presupuesto)", min_value=100, max_value=5000, value=1000, step=50)
-recurso_2 = st.sidebar.slider("Límite del Recurso 2 (ej. Peso total/Personal)", min_value=100, max_value=5000, value=2400, step=50)
+recurso_1 = st.sidebar.slider("Límite del Recurso 1 (Batería)", min_value=100, max_value=5000, value=1000, step=50)
+recurso_2 = st.sidebar.slider("Límite del Recurso 2 (Presupuesto)", min_value=100, max_value=5000, value=2400, step=50)
 
 st.sidebar.subheader("Requisitos Mínimos")
 min_livianos = st.sidebar.number_input("Cantidad mínima de Drones Livianos (x)", min_value=0, value=5, step=1)
@@ -37,8 +37,8 @@ c = [-4, -10]
 
 # Matriz de restricciones de consumo
 A = [
-    [20, 50],   # Consumo del Recurso 1 por cada tipo de drone
-    [50, 120]   # Consumo del Recurso 2 por cada tipo de drone
+    [20, 50],   # Consumo de Batería por cada tipo de drone
+    [50, 120]   # Consumo de Presupuesto por cada tipo de drone
 ]
 
 # Cotas de las restricciones
@@ -93,12 +93,12 @@ if res.success:
         uso_r1 = A[0][0] * res.x[0] + A[0][1] * res.x[1]
         uso_r2 = A[1][0] * res.x[0] + A[1][1] * res.x[1]
         
-        st.markdown(f"**Uso del Recurso 1:** {round(uso_r1, 1)} de {recurso_1} ({round((uso_r1/recurso_1)*100, 1)}%)")
+        st.markdown(f"**Uso de Batería:** {round(uso_r1, 1)} de {recurso_1} ({round((uso_r1/recurso_1)*100, 1)}%)")
         st.progress(min(uso_r1 / recurso_1, 1.0))
         
-        st.markdown(f"**Uso del Recurso 2:** {round(uso_r2, 1)} de {recurso_2} ({round((uso_r2/recurso_2)*100, 1)}%)")
+        st.markdown(f"**Uso de Presupuesto:** {round(uso_r2, 1)} de {recurso_2} ({round((uso_r2/recurso_2)*100, 1)}%)")
         st.progress(min(uso_r2 / recurso_2, 1.0))
 
 else:
     st.error("❌ No se pudo encontrar una solución viable con las restricciones actuales.")
-    st.info("Sugerencia: Intenta disminuir la cantidad mínima exigida de drones o aumenta los límites de recursos disponibles.")
+    st.info("Sugerencia: Intenta disminuir la cantidad mínima exigida de drones o aumenta los límites de batería y presupuesto disponibles.")
